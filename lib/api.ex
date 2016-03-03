@@ -11,7 +11,7 @@ defmodule Delivery.Api do
   ```elixir
   ...
   defp deps do
-  [ {:deliverylib, git: "git@gitlab.ruicloud.cn:titan/logistics-deliverylib.git", tag: "0.0.1" } ]
+  [ {:deliverylib, git: "git@gitlab.ruicloud.cn:titan/logistics-delivery-library.git", tag: "0.0.1" } ]
   end
   ```
 
@@ -74,18 +74,19 @@ defmodule Delivery.Api do
   | destination            | string    | 收货地址       |
   | created_at             | timestamp | 创建时间       |
 
-  成功返回 :ok
+  成功返回 ```{:ok, uuid}``` uuid 是运单的唯一标识
 
-  失败返回 {:error, code, reason}
+  失败返回 ```{:error, code, reason}```
 
   | code | reason       |
   |------+--------------|
   |  500 | 服务内部错误 |
 
+  since: 0.0.1
   """
-  @spec create(String.t, String.t, String.t, String.t, String.t, String.t, String.t, String.t, String.t, String.t, non_neg_integer, String.t, String.t, String.t, non_neg_integer) :: :ok | {:error, code, reason}
-  def create(no, oid, eid, consigner_name, consigner_phone, consigner_license_type, consigner_license_no, consignee_name, consignee_phone, item, qunatity, description, source, destination, created_at) do
-    remote_call(:create, [no, oid, eid, consigner_name, consigner_phone, consigner_license_type, consigner_license_no, consignee_name, consignee_phone, item, qunatity, description, source, destination, created_at])
+  @spec create(String.t, String.t, String.t, String.t, String.t, String.t, String.t, String.t, String.t, String.t, non_neg_integer, String.t, String.t, String.t, non_neg_integer) :: {:ok, uuid} | {:error, code, reason}
+  def create(no, oid, eid, consigner_name, consigner_phone, consigner_license_type, consigner_license_no, consignee_name, consignee_phone, item, quantity, description, source, destination, created_at) do
+    remote_call(:create, [no, oid, eid, consigner_name, consigner_phone, consigner_license_type, consigner_license_no, consignee_name, consignee_phone, item, quantity, description, source, destination, created_at])
   end
 
   @doc """
@@ -95,14 +96,16 @@ defmodule Delivery.Api do
   |-----+------+----------|
   | id  | uuid | 运单标识 |
 
-  成功返回 {:ok, Delivery.Entity.t}
+  成功返回 ```{:ok, Delivery.Entity.t}```
 
-  失败返回 {:error, code, reason}
+  失败返回 ```{:error, code, reason}```
 
   | code | reason       |
   |------+--------------|
   |  404 | 未发现运单   |
   |  500 | 服务内部错误 |
+
+  since: 0.0.1
   """
   @spec delivery(String.t) :: {:ok, Delivery.Entity.t} | {:error, code, reason}
   def delivery(id) do
@@ -116,15 +119,16 @@ defmodule Delivery.Api do
   |-----+------+---------|
   | id  | uuid | 运单标识 |
 
-  成功返回 {:ok, [Delivery.Event.t]}
+  成功返回 ```{:ok, [Delivery.Event.t]}```
 
-  失败返回 {:error, code, reason}
+  失败返回 ```{:error, code, reason}```
 
   | code | reason       |
   |------+--------------|
   |  404 | 未发现运单   |
   |  500 | 服务内部错误 |
 
+  since: 0.0.1
   """
   @spec events(String.t) :: {:ok, [Delivery.Event.t]} | {:error, code, reason}
   def events(id) do
@@ -142,13 +146,16 @@ defmodule Delivery.Api do
   | limit  | int  | 列表内容长度限制                                                                |
   | max    | uuid | 运单标识, 可选，返回不大于 max 代表条目的结果，若不填，则从系统最新条目开始返回 |
 
-  成功返回 {:ok, [Delivery.Entity.t]}
+  成功返回 ```{:ok, [Delivery.Entity.t]}```
 
-  失败返回 {:error, code, reason}
+  失败返回 ```{:error, code, reason}```
 
   | code | reason       |
   |------+--------------|
+  |  404 | 未发现结果   |
   |  500 | 服务内部错误 |
+
+  since: 0.0.1
   """
   @spec delivery_of_employee(String.t, non_neg_integer, non_neg_integer, non_neg_integer, String.t | nil) :: {:ok, [Delivery.Entity.t]} | {:error, code, reason}
   def delivery_of_employee(eid, year, offset, limit, max \\ nil) do
@@ -167,13 +174,16 @@ defmodule Delivery.Api do
   | limit  | int  | 列表内容长度限制                                                                |
   | max    | uuid | 运单标识, 可选，返回不大于 max 代表条目的结果，若不填，则从系统最新条目开始返回 |
 
-  成功返回 {:ok, [Delivery.Entity.t]}
+  成功返回 ```{:ok, [Delivery.Entity.t]}```
 
-  失败返回 {:error, code, reason}
+  失败返回 ```{:error, code, reason}```
 
   | code | reason       |
   |------+--------------|
+  |  404 | 未发现结果   |
   |  500 | 服务内部错误 |
+
+  since: 0.0.1
   """
   @spec delivery_of_enterprise(String.t, non_neg_integer, non_neg_integer, non_neg_integer, non_neg_integer, String.t | nil) :: {:ok, [Delivery.Entity.t]} | {:error, code, reason}
   def delivery_of_enterprise(eid, year, month, offset, limit, max \\ nil) do
@@ -192,13 +202,16 @@ defmodule Delivery.Api do
   | limit  | int  | 列表内容长度限制                                                                |
   | max    | uuid | 运单标识, 可选，返回不大于 max 代表条目的结果，若不填，则从系统最新条目开始返回 |
 
-  成功返回 {:ok, [Delivery.Entity.t]}
+  成功返回 ```{:ok, [Delivery.Entity.t]}```
 
-  失败返回 {:error, code, reason}
+  失败返回 ```{:error, code, reason}```
 
   | code | reason       |
   |------+--------------|
+  |  404 | 未发现结果   |
   |  500 | 服务内部错误 |
+
+  since: 0.0.1
   """
   @spec delivery_of_all(non_neg_integer, non_neg_integer, non_neg_integer, non_neg_integer, non_neg_integer, String.t | nil) :: {:ok, [Delivery.Entity.t]} | {:error, code, reason}
   def delivery_of_all(year, month, day, offset, limit, max \\ nil) do
@@ -212,15 +225,16 @@ defmodule Delivery.Api do
   |-----+--------+----------|
   | no  | string | 运单编号 |
 
-  成功返回 {:ok, [Delivery.Entity.t]}
+  成功返回 ```{:ok, [Delivery.Entity.t]}```
 
-  失败返回 {:error, code, reason}
+  失败返回 ```{:error, code, reason}```
 
   | code | reason       |
   |------+--------------|
   |  404 | 未发现结果   |
   |  500 | 服务内部错误 |
 
+  since: 0.0.1
   """
   @spec search_by_delivery_no(String.t) :: {:ok, [Delivery.Entity.t]} | {:error, code, reason}
   def search_by_delivery_no(no) do
@@ -234,15 +248,16 @@ defmodule Delivery.Api do
   |-----+--------+----------|
   | no  | string | 企业名称 |
 
-  成功返回 {:ok, [Delivery.Entity.t]}
+  成功返回 ```{:ok, [Delivery.Entity.t]}```
 
-  失败返回 {:error, code, reason}
+  失败返回 ```{:error, code, reason}```
 
   | code | reason       |
   |------+--------------|
   |  404 | 未发现结果   |
   |  500 | 服务内部错误 |
 
+  since: 0.0.1
   """
   @spec search_by_enterprise(String.t) :: {:ok, [Delivery.Entity.t]} | {:error, code, reason}
   def search_by_enterprise(name) do
@@ -256,15 +271,16 @@ defmodule Delivery.Api do
   |------+--------+----------|
   | name | string | 发货人姓名 |
 
-  成功返回 {:ok, [Delivery.Entity.t]}
+  成功返回 ```{:ok, [Delivery.Entity.t]}```
 
-  失败返回 {:error, code, reason}
+  失败返回 ```{:error, code, reason}```
 
   | code | reason       |
   |------+--------------|
   |  404 | 未发现结果   |
   |  500 | 服务内部错误 |
 
+  since: 0.0.1
   """
   @spec search_by_consigner(String.t) :: {:ok, [Delivery.Entity.t]} | {:error, code, reason}
   def search_by_consigner(name) do
@@ -278,9 +294,9 @@ defmodule Delivery.Api do
   |-----+--------+--------------------|
   | id  | string | 发货人身份证件号码 |
 
-  成功返回 {:ok, [Delivery.Entity.t]}
+  成功返回 ```{:ok, [Delivery.Entity.t]}```
 
-  失败返回 {:error, code, reason}
+  失败返回 ```{:error, code, reason}```
 
   | code | reason       |
   |------+--------------|
@@ -300,15 +316,16 @@ defmodule Delivery.Api do
   |-------+--------+------------|
   | phone | string | 发货人手机 |
 
-  成功返回 {:ok, [Delivery.Entity.t]}
+  成功返回 ```{:ok, [Delivery.Entity.t]}```
 
-  失败返回 {:error, code, reason}
+  失败返回 ```{:error, code, reason}```
 
   | code | reason       |
   |------+--------------|
   |  404 | 未发现结果   |
   |  500 | 服务内部错误 |
 
+  since: 0.0.1
   """
   @spec search_by_consigner_phone(String.t) :: {:ok, [Delivery.Entity.t]} | {:error, code, reason}
   def search_by_consigner_phone(phone) do
@@ -322,15 +339,16 @@ defmodule Delivery.Api do
   |------+--------+----------|
   | name | string | 收货人姓名 |
 
-  成功返回 {:ok, [Delivery.Entity.t]}
+  成功返回 ```{:ok, [Delivery.Entity.t]}```
 
-  失败返回 {:error, code, reason}
+  失败返回 ```{:error, code, reason}```
 
   | code | reason       |
   |------+--------------|
   |  404 | 未发现结果   |
   |  500 | 服务内部错误 |
 
+  since: 0.0.1
   """
   @spec search_by_consignee(String.t) :: {:ok, [Delivery.Entity.t]} | {:error, code, reason}
   def search_by_consignee(name) do
@@ -344,15 +362,16 @@ defmodule Delivery.Api do
   |-------+--------+------------|
   | phone | string | 收货人手机 |
 
-  成功返回 {:ok, [Delivery.Entity.t]}
+  成功返回 ```{:ok, [Delivery.Entity.t]}```
 
-  失败返回 {:error, code, reason}
+  失败返回 ```{:error, code, reason}```
 
   | code | reason       |
   |------+--------------|
   |  404 | 未发现结果   |
   |  500 | 服务内部错误 |
 
+  since: 0.0.1
   """
   @spec search_by_consignee_phone(String.t) :: {:ok, [Delivery.Entity.t]} | {:error, code, reason}
   def search_by_consignee_phone(phone) do
