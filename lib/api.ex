@@ -21,7 +21,7 @@ defmodule Delivery.Api do
   在 Application 的 start 方法中，加入如下代码，确保帐号服务能被 resource_discovery 模块发现。
   ```elixir
   def start(_type, _args) do
-  :ok = ensure_contact()
+  ...
   :resource_discovery.add_target_resource_type(:delivery_service)
   ...
   :resource_discovery.trade_resources()
@@ -29,6 +29,12 @@ defmodule Delivery.Api do
   ...
   end
   ```
+
+  为了能让应用读取到正确的配置信息，在 config.exs 文件中添加如下内容：
+  ```elixir
+  config :resource_discovery, contact_nodes: [:contact1@contact1, :contact2@contact2]
+  ```
+  contact_nodes 可以根据具体情况进行调整。
 
   """
   @vsn "0.0.1"
