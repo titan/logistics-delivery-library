@@ -17,8 +17,9 @@ defmodule Delivery.Entity do
   | source      | string    | 发货地址 |
   | destination | string    | 收货地址 |
   | created_at  | timestamp | 创建时间 |
+  | image       | image     | 照片信息 |
 
   """
-  defstruct did: nil, no: nil, oid: nil, eid: nil, consigner: nil, consignee: nil, item: nil, quantity: 0, description: nil, source: nil, destination: nil, created_at: 0
-  @type t :: %Delivery.Entity{did: String.t, no: String.t, oid: String.t, eid: String.t, consigner: Delivery.Person.t, consignee: Delivery.Person.t, item: String.t, quantity: non_neg_integer, description: String.t, source: String.t, destination: String.t, created_at: non_neg_integer}
+  defstruct did: nil, no: nil, oid: nil, eid: nil, consigner: nil, consignee: nil, item: nil, quantity: 0, description: nil, source: nil, destination: nil, created_at: 0, image: nil
+  @type t :: %Delivery.Entity{did: String.t, no: String.t, oid: String.t, eid: String.t, consigner: Delivery.Person.t, consignee: Delivery.Person.t, item: String.t, quantity: non_neg_integer, description: String.t, source: String.t, destination: String.t, created_at: non_neg_integer, image: Delivery.Image.t}
 end

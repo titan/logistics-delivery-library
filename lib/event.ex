@@ -18,8 +18,9 @@ defmodule Delivery.Event do
   | description | string    | 物品描述     |
   | source      | string    | 发货地址     |
   | destination | string    | 收货地址     |
+  | image       | image     | 照片信息     |
 
   """
-  defstruct type: 0, oid: nil, occurred_at: 0, did: nil, no: nil, eid: nil, consigner: nil, consignee: nil, item: nil, quantity: 0, description: nil, source: nil, destination: nil
-  @type t :: %Delivery.Event{type: non_neg_integer, oid: String.t, occurred_at: non_neg_integer, did: String.t, no: String.t, eid: String.t, consigner: Delivery.Person.t, consignee: Delivery.Person.t, item: String.t, quantity: non_neg_integer, description: String.t, source: String.t, destination: String.t}
+  defstruct type: 0, oid: nil, occurred_at: 0, did: nil, no: nil, eid: nil, consigner: nil, consignee: nil, item: nil, quantity: 0, description: nil, source: nil, destination: nil, image: nil
+  @type t :: %Delivery.Event{type: non_neg_integer, oid: String.t, occurred_at: non_neg_integer, did: String.t, no: String.t, eid: String.t, consigner: Delivery.Person.t, consignee: Delivery.Person.t, item: String.t, quantity: non_neg_integer, description: String.t, source: String.t, destination: String.t, image: Delivery.Image.t}
 end

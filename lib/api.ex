@@ -12,7 +12,7 @@ defmodule Delivery.Api do
   ```elixir
   ...
   defp deps do
-  [ {:deliverylib, git: "git@gitlab.ruicloud.cn:titan/logistics-delivery-library.git", tag: "0.0.1" } ]
+  [ {:deliverylib, git: "git@gitlab.ruicloud.cn:titan/logistics-delivery-library.git", tag: "0.0.2" } ]
   end
   ```
 
@@ -65,23 +65,25 @@ defmodule Delivery.Api do
 
   ## 参数
 
-  | arg                    | type      | meaning        |
-  |------------------------+-----------+----------------|
-  | no                     | string    | 运单编号       |
-  | oid                    | uuid      | 揽件人编号     |
-  | eid                    | uuid      | 企业编号       |
-  | consigner_name         | string    | 发货人姓名     |
-  | consigner_phone        | string    | 发货人手机     |
-  | consigner_license_type | string    | 发货人证件类型 |
-  | consigner_license_no   | string    | 发货人证件号码 |
-  | consignee_name         | string    | 收货人姓名     |
-  | consignee_phone        | string    | 收货人手机     |
-  | item                   | string    | 物品名称       |
-  | quantity               | integer   | 数量           |
-  | description            | string    | 物品描述       |
-  | source                 | string    | 发货地址       |
-  | destination            | string    | 收货地址       |
-  | created_at             | timestamp | 创建时间       |
+  | arg                          | type      | meaning            |
+  |------------------------------+-----------+--------------------|
+  | no                           | string    | 运单编号           |
+  | oid                          | uuid      | 揽件人编号         |
+  | eid                          | uuid      | 企业编号           |
+  | consigner_name               | string    | 发货人姓名         |
+  | consigner_phone              | string    | 发货人手机         |
+  | consigner_license_type       | string    | 发货人证件类型     |
+  | consigner_license_no         | string    | 发货人证件号码     |
+  | consignee_name               | string    | 收货人姓名         |
+  | consignee_phone              | string    | 收货人手机         |
+  | item                         | string    | 物品名称           |
+  | quantity                     | integer   | 数量               |
+  | description                  | string    | 物品描述           |
+  | source                       | string    | 发货地址           |
+  | destination                  | string    | 收货地址           |
+  | created_at                   | timestamp | 创建时间           |
+  | consigner_license_front_view | string    | 发货人证件正面照片 |
+  | consigner_license_rear_view  | string    | 发货人证件背面照片 |
 
   ## 结果
 
@@ -102,11 +104,11 @@ defmodule Delivery.Api do
   |------+--------------|
   |  500 | 服务内部错误 |
 
-  since: 0.0.1
+  since: 0.0.2
   """
-  @spec create(String.t, String.t, String.t, String.t, String.t, String.t, String.t, String.t, String.t, String.t, non_neg_integer, String.t, String.t, String.t, non_neg_integer) :: {:ok, uuid} | {:error, code, reason}
-  def create(no, oid, eid, consigner_name, consigner_phone, consigner_license_type, consigner_license_no, consignee_name, consignee_phone, item, quantity, description, source, destination, created_at) do
-    remote_call(:create, [no, oid, eid, consigner_name, consigner_phone, consigner_license_type, consigner_license_no, consignee_name, consignee_phone, item, quantity, description, source, destination, created_at])
+  @spec create(String.t, String.t, String.t, String.t, String.t, String.t, String.t, String.t, String.t, String.t, non_neg_integer, String.t, String.t, String.t, non_neg_integer, String.t, String.t) :: {:ok, uuid} | {:error, code, reason}
+  def create(no, oid, eid, consigner_name, consigner_phone, consigner_license_type, consigner_license_no, consignee_name, consignee_phone, item, quantity, description, source, destination, created_at, consigner_license_front_view, consigner_license_rear_view) do
+    remote_call(:create, [no, oid, eid, consigner_name, consigner_phone, consigner_license_type, consigner_license_no, consignee_name, consignee_phone, item, quantity, description, source, destination, created_at, consigner_license_front_view, consigner_license_rear_view])
   end
 
   @doc """
