@@ -12,7 +12,7 @@ defmodule Delivery.Api do
   ```elixir
   ...
   defp deps do
-  [ {:deliverylib, git: "git@gitlab.ruicloud.cn:titan/logistics-delivery-library.git", tag: "0.0.2" } ]
+  [ {:deliverylib, git: "git@gitlab.ruicloud.cn:ruicloud-logistics/logistics-delivery-library.git", tag: "0.0.3" } ]
   end
   ```
 
@@ -38,7 +38,7 @@ defmodule Delivery.Api do
   contact_nodes 可以根据具体情况进行调整。
 
   """
-  @vsn "0.0.1"
+  @vsn "0.0.3"
 
   @typedoc """
   Integer 类型的错误状态编码
@@ -84,6 +84,7 @@ defmodule Delivery.Api do
   | created_at                   | timestamp | 创建时间           |
   | consigner_license_front_view | string    | 发货人证件正面照片 |
   | consigner_license_rear_view  | string    | 发货人证件背面照片 |
+  | consigner_on_hand_view       | string    | 发货人手持正面照片 |
 
   ## 结果
 
@@ -104,11 +105,11 @@ defmodule Delivery.Api do
   |------+--------------|
   |  500 | 服务内部错误 |
 
-  since: 0.0.2
+  since: 0.0.3
   """
-  @spec create(String.t, String.t, String.t, String.t, String.t, String.t, String.t, String.t, String.t, String.t, non_neg_integer, String.t, String.t, String.t, non_neg_integer, String.t, String.t) :: {:ok, uuid} | {:error, code, reason}
-  def create(no, oid, eid, consigner_name, consigner_phone, consigner_license_type, consigner_license_no, consignee_name, consignee_phone, item, quantity, description, source, destination, created_at, consigner_license_front_view, consigner_license_rear_view) do
-    remote_call(:create, [no, oid, eid, consigner_name, consigner_phone, consigner_license_type, consigner_license_no, consignee_name, consignee_phone, item, quantity, description, source, destination, created_at, consigner_license_front_view, consigner_license_rear_view])
+  @spec create(String.t, String.t, String.t, String.t, String.t, String.t, String.t, String.t, String.t, String.t, non_neg_integer, String.t, String.t, String.t, non_neg_integer, String.t, String.t, String.t) :: {:ok, uuid} | {:error, code, reason}
+  def create(no, oid, eid, consigner_name, consigner_phone, consigner_license_type, consigner_license_no, consignee_name, consignee_phone, item, quantity, description, source, destination, created_at, consigner_license_front_view, consigner_license_rear_view, consigner_on_hand_view) do
+    remote_call(:create, [no, oid, eid, consigner_name, consigner_phone, consigner_license_type, consigner_license_no, consignee_name, consignee_phone, item, quantity, description, source, destination, created_at, consigner_license_front_view, consigner_license_rear_view, consigner_on_hand_view])
   end
 
   @doc """
