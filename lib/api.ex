@@ -38,7 +38,7 @@ defmodule Delivery.Api do
   contact_nodes 可以根据具体情况进行调整。
 
   """
-  @vsn "0.0.3"
+  @vsn "0.0.4"
 
   @typedoc """
   Integer 类型的错误状态编码
@@ -545,9 +545,153 @@ defmodule Delivery.Api do
     remote_call(:search_by_consignee_phone, [phone])
   end
 
-  @spec remote_call(atom, [integer | String.t]) :: :ok | {:ok, Entity.t} | {:ok, [Entity.t]} | {:ok, [Event.t]} | {:error, code, reason}
-  defp remote_call(cmd, args) when is_atom(cmd) and is_list(args) do
-    :resource_discovery.rpc_call(:delivery_service, Delivery.Service, cmd, args)
+  @doc """
+  按月统计某公司某一年的运单量。
+
+  ## 参数
+
+  | arg        | type    | meaning    |
+  |------------+---------+------------|
+  | enterprise | string  | 公司名称 |
+  | year       | integer | 年     |
+
+  ## 结果
+
+  ### 成功
+
+  ```elixir
+  {:ok, [{month, count}]}
+  ```
+
+  ### 失败
+
+  ```elixir
+  {:error, code, reason}
+  ```
+
+  | code | reason       |
+  |------+--------------|
+  |  404 | 未发现结果   |
+  |  500 | 服务内部错误 |
+
+  since: 0.0.4
+  """
+  @spec delivery_count_of_enterprise_by_month(String.t, non_neg_integer) :: {:ok, [{non_neg_integer, non_neg_integer}]} | {:error, code, reason}
+  def delivery_count_of_enterprise_by_month(enterprise, year) do
+    remote_call(:delivery_count_of_enterprise_by_month, [enterprise, year])
   end
+
+  @doc """
+  按天统计某公司某一年某一月的运单量。
+
+  ## 参数
+
+  | arg        | type    | meaning    |
+  |------------+---------+------------|
+  | enterprise | string  | 公司名称 |
+  | year       | integer | 年     |
+  | month      | integer | 月     |
+
+  ## 结果
+
+  ### 成功
+
+  ```elixir
+  {:ok, [{day, count}]}
+  ```
+
+  ### 失败
+
+  ```elixir
+  {:error, code, reason}
+  ```
+
+  | code | reason       |
+  |------+--------------|
+  |  404 | 未发现结果   |
+  |  500 | 服务内部错误 |
+
+  since: 0.0.4
+  """
+  @spec delivery_count_of_enterprise_by_day(String.t, non_neg_integer, non_neg_integer) :: {:ok, [{non_neg_integer, non_neg_integer}]} | {:error, code, reason}
+  def delivery_count_of_enterprise_by_day(enterprise, year, month) do
+    remote_call(:delivery_count_of_enterprise_by_day, [enterprise, year, month])
+  end
+
+  @doc """
+  按月统计所有公司某一年的运单量。
+
+  ## 参数
+
+  | arg        | type    | meaning    |
+  |------------+---------+------------|
+  | year       | integer | 年     |
+
+  ## 结果
+
+  ### 成功
+
+  ```elixir
+  {:ok, [{month, count}]}
+  ```
+
+  ### 失败
+
+  ```elixir
+  {:error, code, reason}
+  ```
+
+  | code | reason       |
+  |------+--------------|
+  |  404 | 未发现结果   |
+  |  500 | 服务内部错误 |
+
+  since: 0.0.4
+  """
+  @spec delivery_count_of_all_by_month(non_neg_integer) :: {:ok, [{non_neg_integer, non_neg_integer}]} | {:error, code, reason}
+  def delivery_count_of_all_by_month(year) do
+    remote_call(:delivery_count_of_all_by_month, [year])
+  end
+
+  @doc """
+  按天统计所有公司某一年某一月的运单量。
+
+  ## 参数
+
+  | arg        | type    | meaning    |
+  |------------+---------+------------|
+  | year       | integer | 年     |
+  | month      | integer | 月     |
+
+  ## 结果
+
+  ### 成功
+
+  ```elixir
+  {:ok, [{day, count}]}
+  ```
+
+  ### 失败
+
+  ```elixir
+  {:error, code, reason}
+  ```
+
+  | code | reason       |
+  |------+--------------|
+  |  404 | 未发现结果   |
+  |  500 | 服务内部错误 |
+
+  since: 0.0.4
+  """
+  @spec delivery_count_of_all_by_day(String.t, non_neg_integer, non_neg_integer) :: {:ok, [{non_neg_integer, non_neg_integer}]} | {:error, code, reason}
+def delivery_count_of_all_by_day(enterprise, year, month) do
+  remote_call(:delivery_count_of_all_by_day, [year, month])
+end
+
+@spec remote_call(atom, [integer | String.t]) :: :ok | {:ok, Entity.t} | {:ok, [Entity.t]} | {:ok, [Event.t]} | {:error, code, reason}
+defp remote_call(cmd, args) when is_atom(cmd) and is_list(args) do
+  :resource_discovery.rpc_call(:delivery_service, Delivery.Service, cmd, args)
+end
 
 end
