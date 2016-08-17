@@ -552,7 +552,7 @@ defmodule Delivery.Api do
 
   | arg        | type    | meaning    |
   |------------+---------+------------|
-  | enterprise | string  | 公司名称 |
+  | eid        | uuid    | 公司编号  |
   | year       | integer | 年     |
 
   ## 结果
@@ -560,8 +560,10 @@ defmodule Delivery.Api do
   ### 成功
 
   ```elixir
-  {:ok, [{month, count}]}
+  {:ok, [count]}
   ```
+
+  count 从年初到年末按时间顺序排列。
 
   ### 失败
 
@@ -576,9 +578,9 @@ defmodule Delivery.Api do
 
   since: 0.0.4
   """
-  @spec delivery_count_of_enterprise_by_month(String.t, non_neg_integer) :: {:ok, [{non_neg_integer, non_neg_integer}]} | {:error, code, reason}
-  def delivery_count_of_enterprise_by_month(enterprise, year) do
-    remote_call(:delivery_count_of_enterprise_by_month, [enterprise, year])
+  @spec delivery_count_of_enterprise_by_month(String.t, non_neg_integer) :: {:ok, [non_neg_integer]} | {:error, code, reason}
+  def delivery_count_of_enterprise_by_month(eid, year) do
+    remote_call(:delivery_count_of_enterprise_by_month, [eid, year])
   end
 
   @doc """
@@ -597,8 +599,10 @@ defmodule Delivery.Api do
   ### 成功
 
   ```elixir
-  {:ok, [{day, count}]}
+  {:ok, [count]}
   ```
+
+  count 从月初到月末按时间顺序排列。
 
   ### 失败
 
@@ -613,7 +617,7 @@ defmodule Delivery.Api do
 
   since: 0.0.4
   """
-  @spec delivery_count_of_enterprise_by_day(String.t, non_neg_integer, non_neg_integer) :: {:ok, [{non_neg_integer, non_neg_integer}]} | {:error, code, reason}
+  @spec delivery_count_of_enterprise_by_day(String.t, non_neg_integer, non_neg_integer) :: {:ok, [non_neg_integer]} | {:error, code, reason}
   def delivery_count_of_enterprise_by_day(enterprise, year, month) do
     remote_call(:delivery_count_of_enterprise_by_day, [enterprise, year, month])
   end
@@ -632,8 +636,10 @@ defmodule Delivery.Api do
   ### 成功
 
   ```elixir
-  {:ok, [{month, count}]}
+  {:ok, [count]}
   ```
+
+  count 从年初到年末按时间顺序排列。
 
   ### 失败
 
@@ -648,7 +654,7 @@ defmodule Delivery.Api do
 
   since: 0.0.4
   """
-  @spec delivery_count_of_all_by_month(non_neg_integer) :: {:ok, [{non_neg_integer, non_neg_integer}]} | {:error, code, reason}
+  @spec delivery_count_of_all_by_month(non_neg_integer) :: {:ok, [non_neg_integer]} | {:error, code, reason}
   def delivery_count_of_all_by_month(year) do
     remote_call(:delivery_count_of_all_by_month, [year])
   end
@@ -668,8 +674,10 @@ defmodule Delivery.Api do
   ### 成功
 
   ```elixir
-  {:ok, [{day, count}]}
+  {:ok, [count]}
   ```
+
+  count 从月初到月末按时间顺序排列。
 
   ### 失败
 
@@ -684,7 +692,7 @@ defmodule Delivery.Api do
 
   since: 0.0.4
   """
-  @spec delivery_count_of_all_by_day(String.t, non_neg_integer, non_neg_integer) :: {:ok, [{non_neg_integer, non_neg_integer}]} | {:error, code, reason}
+  @spec delivery_count_of_all_by_day(String.t, non_neg_integer, non_neg_integer) :: {:ok, [non_neg_integer]} | {:error, code, reason}
 def delivery_count_of_all_by_day(enterprise, year, month) do
   remote_call(:delivery_count_of_all_by_day, [year, month])
 end
